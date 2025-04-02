@@ -1,0 +1,7 @@
+applications:
+- name: cap-documentator-backend
+  memory: 512M
+  buildpacks:
+    - python_buildpack
+  command: python src/api/main.py
+  path: .

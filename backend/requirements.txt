@@ -1,0 +1,8 @@
+flask
+gitpython
+langchain
+chromadb
+python-docx
+openai
+requests
+flask-cors

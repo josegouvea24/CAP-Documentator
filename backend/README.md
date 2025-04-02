@@ -17,7 +17,7 @@ This is the **Python-based backend** of the CAP Documentator system. It is desig
 
 ## 📂 Folder Structure
 
-\`\`\`bash
+```bash
 backend/
 ├── src/
 │   ├── api/             # Flask API endpoints (main app logic)
@@ -31,7 +31,7 @@ backend/
 ├── manifest.yml         # Cloud Foundry deployment descriptor
 ├── README.md            # You are here
 └── src/api/main.py      # Flask entrypoint
-\`\`\`
+```
 
 ---
 
@@ -43,27 +43,27 @@ backend/
 - Git
 
 ### 🧪 Initialize environment
-\`\`\`bash
+```bash
 mkvirtualenv cap-documentator-env
 workon cap-documentator-env
 pip install -r requirements.txt
 python src/api/main.py
-\`\`\`
+```
 
 ---
 
 ## ☁️ Deploy to SAP BTP (Cloud Foundry)
 
 ### 🔐 Login
-\`\`\`bash
+```bash
 cf login -a https://api.cf.<region>.hana.ondemand.com
-\`\`\`
+```
 
 ### 🚀 Deploy the backend
-\`\`\`bash
+```bash
 cd backend
 cf push
-\`\`\`
+```
 
 This uses the included \`manifest.yml\` to deploy the Flask app using the \`python_buildpack\`.
 
@@ -77,11 +77,11 @@ This uses the included \`manifest.yml\` to deploy the Flask app using the \`pyth
 | POST   | \`/document\`  | Accepts JSON payload with \`repo_url\` and returns \`.docx\` path |
 
 Example POST request:
-\`\`\`json
+```json
 {
   "repo_url": "https://github.com/org/my-cap-project"
 }
-\`\`\`
+```
 
 ---
 

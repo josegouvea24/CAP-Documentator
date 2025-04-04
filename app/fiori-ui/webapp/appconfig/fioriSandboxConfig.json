@@ -1,0 +1,37 @@
+{
+    "services": {
+      "LaunchPage": {
+        "adapter": {
+          "config": {
+            "groups": [{
+              "tiles": [{
+                "tileType": "sap.ushell.ui.tile.StaticTile",
+                "properties": {
+                  "title": "CAP Documentator",
+                  "targetURL": "#CapDocument-display"
+                }
+              }]
+            }]
+          }
+        }
+      },
+      "ClientSideTargetResolution": {
+        "adapter": {
+          "config": {
+            "inbounds": {
+              "CapDocument-display": {
+                "semanticObject": "CapDocument",
+                "action": "display",
+                "title": "CAP Documentator",
+                "resolutionResult": {
+                  "applicationType": "SAPUI5",
+                  "additionalInformation": "SAPUI5.Component=sap.capdocumentator.fioriui",
+                  "url": "../"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }  

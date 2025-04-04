@@ -13,23 +13,32 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
       "version": "1.17.1",
-      "toolsId": "116794b9-4b5d-44f8-bf7e-b1b5612ceb50"
+      "toolsId": "ad0f8279-85a6-4b82-a845-620920f52a97"
     },
     "crossNavigation": {
       "inbounds": {
-        "CAPDocumentator-display": {
-          "semanticObject": "CAPDocumentator",
+        "CapDocument-display": {
+          "semanticObject": "CapDocument",
           "action": "display",
-          "title": "{{CAPDocumentator-display.flpTitle}}",
-          "subTitle": "{{CAPDocumentator-display.flpSubtitle}}",
+          "title": "{{CapDocument-display.flpTitle}}",
+          "subTitle": "{{CapDocument-display.flpSubtitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
           }
         }
       }
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/DocumentationService/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
     }
-  },
+  }
+},
   "sap.ui": {
     "technology": "UI5",
     "icons": {
@@ -60,6 +69,15 @@
       "cozy": true
     },
     "models": {
+      "": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server"
+        }
+      },
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
@@ -88,17 +106,17 @@
       },
       "routes": [
         {
-          "name": "RouteApp",
+          "name": "RouteMainView",
           "pattern": ":?query:",
           "target": [
-            "TargetApp"
+            "TargetMainView"
           ]
         }
       ],
       "targets": {
-        "TargetApp": {
-          "id": "App",
-          "name": "App"
+        "TargetMainView": {
+          "id": "MainView",
+          "name": "MainView"
         }
       }
     },

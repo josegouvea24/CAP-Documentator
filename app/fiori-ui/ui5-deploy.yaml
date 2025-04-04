@@ -4,14 +4,15 @@ specVersion: "3.1"
 metadata:
   name: sap.capdocumentator.fioriui
 type: application
+resources:
+  configuration:
+    propertiesFileSourceEncoding: UTF-8
 builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
   customTasks:
-    - name: ui5-tooling-transpile-task
-      afterTask: replaceVersion
-      configuration:
-        debug: true
-        transformModulesToUI5:
-          overridesToOverride: true
     - name: webide-extension-task-updateManifestJson
       afterTask: replaceVersion
       configuration:
@@ -23,10 +24,3 @@ builder:
         archiveName: sapcapdocumentatorfioriui
         additionalFiles:
           - xs-app.json
-  resources:
-    excludes:
-      - /test/**
-      - /localService/**
-resources:
-  configuration:
-    propertiesFileSourceEncoding: UTF-8

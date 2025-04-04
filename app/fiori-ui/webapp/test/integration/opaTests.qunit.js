@@ -1,5 +1,6 @@
 /* global QUnit */
-sap.ui.require(["integration/NavigationJourney"
+
+sap.ui.require(["sap/capdocumentator/fioriui/test/integration/AllJourneys"
 ], function () {
 	QUnit.config.autostart = false;
 	QUnit.start();

@@ -1,0 +1,38 @@
+<mvc:View
+    controllerName="sap.capdocumentator.fioriui.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <VBox
+        class="sapUiSmallMargin"
+        id="mainView"
+    >
+        <Input
+            id="repoUrlInput"
+            placeholder="Enter GitHub Repo URL"
+            width="100%"
+        />
+
+        <Button
+            id="addRepoButton"
+            text="Add Repository"
+            press=".onAddRepository"
+            type="Emphasized"
+            class="sapUiSmallMarginTop"
+        />
+
+        <List
+            id="repoList"
+            items="{/Repositories}"
+            noDataText="No repositories found"
+        >
+            <StandardListItem
+                id="repoListItem"
+                title="{name}"
+                description="{url}"
+                type="Active"
+                press=".onOpenReadme"
+            />
+        </List>
+    </VBox>
+</mvc:View>

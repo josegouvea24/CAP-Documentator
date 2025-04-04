@@ -1,6 +1,7 @@
 <mvc:View controllerName="sap.capdocumentator.fioriui.controller.App"
+    displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+    <App id="app">
+    </App>
 </mvc:View>

@@ -1,7 +1,7 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Apr 02 2025 09:29:03 GMT+0100 (Western European Summer Time)|
+|**Generation Date and Time**<br>Thu Apr 03 2025 13:25:31 GMT+0100 (Western European Summer Time)|
 |**App Generator**<br>@sap/generator-fiori-freestyle|
 |**App Generator Version**<br>1.17.1|
 |**Generation Platform**<br>CLI|
@@ -9,17 +9,17 @@
 |**Service Type**<br>None|
 |**Service URL**<br>N/A|
 |**Module Name**<br>fiori-ui|
-|**Application Title**<br>CAP Documentator UI|
-|**Namespace**<br>sap.capdocumentator|
+|**Application Title**<br>CAP Documentator|
+|**Namespace**<br>sap.capdocumentator.fioriui|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.134.1|
 |**Enable Code Assist Libraries**<br>True|
-|**Enable TypeScript**<br>True|
+|**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>True, see https://www.npmjs.com/package/eslint-plugin-fiori-custom for the eslint rules.|
 
 ## fiori-ui
 
-CAP Documentator SAP Fiori UI
+An AI-powered tool to automatically generate detailed documentation for SAP CAP projects.
 
 ### Starting the generated app
 

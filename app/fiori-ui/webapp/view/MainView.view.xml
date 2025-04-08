@@ -21,6 +21,14 @@
             class="sapUiSmallMarginTop"
         />
 
+        <Button
+            id="fetchReadmeButton"
+            text="Fetch README"
+            press=".onFetchReadme"
+            type="Emphasized"
+            class="sapUiSmallMarginTop"
+        />
+
         <List
             id="repoList"
             items="{/Repositories}"

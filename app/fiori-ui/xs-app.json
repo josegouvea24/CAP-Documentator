@@ -3,8 +3,8 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^undefined/(.*)$",
-      "target": "undefined/$1",
+      "source": "^/odata/(.*)$",
+      "target": "/odata/$1",
       "destination": "cap-backend",
       "authenticationType": "xsuaa",
       "csrfProtection": false

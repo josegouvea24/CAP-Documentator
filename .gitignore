@@ -23,9 +23,10 @@ mta_archives/
 .DS_Store
 *.orig
 *.log
-
 *.iml
 *.flattened-pom.xml
+__pycache__
+*.pyc
 
 # IDEs
 .vscode

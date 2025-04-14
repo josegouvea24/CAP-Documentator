@@ -2,17 +2,38 @@ import os
 import tempfile
 import git  # GitPython
 
+IRRELEVANT_FILES = [
+    "/webapp",
+    "/app",
+    "/node_modules",
+    ".gitignore",
+    "package-lock.json",
+    "/i18n",
+    ".vscode",
+    ".env"
+]
+
 def clone_and_prepare(repo_url):
     temp_dir = tempfile.mkdtemp()
     git.Repo.clone_from(repo_url, temp_dir)
     return temp_dir
 
+def collect_all_files(project_path, irrelevant_files=IRRELEVANT_FILES):
+    relevant_files = []
+    
+    for root, dirs, files in os.walk(project_path):
+        for file in files:
+                abs_path = os.path.join(root, file)
+                rel_path = os.path.relpath(abs_path, project_path)
+            
+                relevant_files.append({
+                    "name": file,
+                    "full_path": abs_path,
+                    "rel_path": rel_path,
+                    "format": file.split(".")[-1] if "." in file else None,
+                    "is_relevant": not any(exclude in rel_path for exclude in irrelevant_files),    
+                })
 
-def extract_readme(path):
-    candidates = ["README.md", "readme.md", "README.MD"]
-    for name in candidates:
-        readme_path = os.path.join(path, name)
-        if os.path.exists(readme_path):
-            with open(readme_path, "r", encoding="utf-8") as f:
-                return f.read()
-    return None
+                print(f"Collected file: {file} from {rel_path}")
+
+    return relevant_files

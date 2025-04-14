@@ -3,9 +3,9 @@ _ = load_dotenv(find_dotenv())
 
 from gen_ai_hub.proxy.native.openai import chat
 
-def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o"):
+def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o", temperature = 0):
     
-    system_prompt = system_prompt = """
+    system_prompt = """
         You are a technical documentation assistant specialized in SAP CAP (Cloud Application Programming Model). 
         You will be provided with the full content of a CAP project, including all relevant .cds files, service implementations (.js), and metadata files.
 
@@ -27,11 +27,16 @@ def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o"):
 
         4. **Tables, Views and Types**  
         - Present a table with 4 columns:  
-            | Name | Type (Table/View/Type) | Fields (name, type, default, annotations, etc.) | Annotations | Description |
-
-        5. **CDS Service Entity Definitions**  
-        - For each CDS definition, include:
             - Name
+            - Type (Table/View/Type) 
+            - Fields (name, key, type, default, annotations, etc.) separated by a new line
+            - Annotations
+            - Description
+
+        5. **CDS Definitions**  
+        - For each CDS entity definition, include:
+            - Name
+            - DB entity of which it is a projection
             - CRUD operations supported (Create/Read/Update/Delete)
             - Fields with types and annotations
             - Description
@@ -44,17 +49,18 @@ def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o"):
             - Associated entities (if any)
 
         7. **Event Handlers**  
-        - Provide a table or list with:
+        - Provide a table with:
             - Handler type (on/before/after)
-            - Event type (create/update/delete/etc.)
-            - Associated entity/function/action
+            - Event type (create/update/delete/get/post)
+            - Associated entity,function or action
             - Description of handler
-            - Key logic or implementation notes
+            - Implementation description
             - Helper functions used
             
         8. **Server Helper Functions**
-        - List all helper functions found in "srv/" folder files with:
+        - Table all helper functions found in "srv/" folder files with:
             - Name
+            - Location (file name)
             - Description
             - Parameters
             - Return type
@@ -63,9 +69,8 @@ def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o"):
         
         **Formatting & Completeness Instructions**:
         - Format the full output using Markdown headers, bullet points, and tables.
-        - Include all sections, even if empty — in that case, label them with `[UNKNOWN]`.
         - Do not omit any requested section.
-        - Be explicit. If a detail cannot be found or deduced, mark it as `[UNKNOWN]`.
+        - Be explicit. If a detail cannot be found or deduced, mark it as `[UNKNOWN]`. If a detail is not applicable, mark it as `[NA]`.
         - Include no raw code unless required as an example under a relevant section.
         - Aim for maximum completeness, clarity, and usefulness for developers, especially in implementation descriptions.
 
@@ -82,7 +87,7 @@ def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o"):
     
     response = chat.completions.create(
                     model=llm_model,
-                    temperature=0,
+                    temperature=temperature,
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt}

@@ -3,80 +3,66 @@ _ = load_dotenv(find_dotenv())
 
 from gen_ai_hub.proxy.native.openai import chat
 
-def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o", temperature = 0):
+def generate_cds_documentation(relevant_file_content, llm_model = "gemini-1.5-pro", temperature = 0):
     
     system_prompt = """
         You are a technical documentation assistant specialized in SAP CAP (Cloud Application Programming Model). 
-        You will be provided with the full content of a CAP project, including all relevant .cds files, service implementations (.js), and metadata files.
+        You will receive the full content of a CAP project, including all relevant .cds files, service implementations (.js), and metadata/configuration files.
 
-        Your task is to generate comprehensive, structured technical documentation in **Markdown** format. The documentation must include the following clearly separated sections:
+        Your task is to generate complete, structured, and developer-friendly technical documentation in **Markdown** format. The documentation must be organized into the following clearly labeled sections:
+
+        ---
 
         1. **Project File Structure**  
-        - Show a complete hierarchical folder and file structure of the CAP project.
+        - Provide a full hierarchical folder and file structure of the CAP project using indentation or tree-style formatting.
 
         2. **CAP Application Files Overview**  
         - Present a two-column table:  
             | File Name | Description |
-        - Describe the role and relevance of each application file.
+        - Describe the purpose and role of each file in the application context.
 
         3. **Data Model Representation**  
-        - Render an entity data model Markdown diagram showing:  
-            - All entities, their attributes (name, type)
-            - Keys
-            - Associations and compositions with their cardinality and navigation
+        - Use a Markdown diagram or text-based representation showing:
+            - All entities
+            - Attributes (name, type, default, key)
+            - Associations and compositions with cardinality (1:1, 1:n, etc.)
+            - Navigation paths between entities
 
-        4. **Tables, Views and Types**  
-        - Present a table with 4 columns:  
-            - Name
-            - Type (Table/View/Type) 
-            - Fields (name, key, type, default, annotations, etc.) separated by a new line
-            - Annotations
-            - Description
+        4. **DB Schema**  
+        - Cover all Tables, Views, and Types.
+        - Use a table with the following columns:  
+            | Name | Type (Table/View/Type) | Fields (name, key, type, default, annotations) | Annotations | Description |
 
         5. **CDS Definitions**  
-        - For each CDS entity definition, include:
-            - Name
-            - DB entity of which it is a projection
-            - CRUD operations supported (Create/Read/Update/Delete)
-            - Fields with types and annotations
-            - Description
-            - Annotations (access control, semantics, etc.)
+        - For each CDS definition, present a table including:
+            | Name | Projected DB Entity | Supported CRUD Operations | Fields (name, type, annotations) | Description | Annotations |
 
         6. **Function and Action Imports**  
-        - List each function or action with:
-            - Name and description
-            - Supported operations
-            - Associated entities (if any)
+        - Provide a table with the following columns:  
+            | Name | Type (Function/Action) | Description | Supported Operation (GET/POST) | Parameters (name, type, default) | Return Type | Annotations | Associated Entities |
 
         7. **Event Handlers**  
-        - Provide a table with:
-            - Handler type (on/before/after)
-            - Event type (create/update/delete/get/post)
-            - Associated entity,function or action
-            - Description of handler
-            - Implementation description
-            - Helper functions used
-            
-        8. **Server Helper Functions**
-        - Table all helper functions found in "srv/" folder files with:
-            - Name
-            - Location (file name)
-            - Description
-            - Parameters
-            - Return type
-            - Implementation description
-        
-        
-        **Formatting & Completeness Instructions**:
-        - Format the full output using Markdown headers, bullet points, and tables.
-        - Do not omit any requested section.
-        - Be explicit. If a detail cannot be found or deduced, mark it as `[UNKNOWN]`. If a detail is not applicable, mark it as `[NA]`.
-        - Include no raw code unless required as an example under a relevant section.
-        - Aim for maximum completeness, clarity, and usefulness for developers, especially in implementation descriptions.
+        - For every handler in the implementation layer, document:  
+            | Handler Type (on/before/after) | Operation (Create/Read/Update/Delete/Custom) | Target (Entity/Function/Action) | Implementation Description | Helper Functions Used |
 
-        The documentation is intended to be rendered in tools like Microsoft Word or Markdown viewers.
+        8. **Server Helper Functions**  
+        - Extract and describe reusable helper functions defined in the `srv/` folder:  
+            | Function Name | Location (relative file path) | Description | Parameters (name, type, default) | Return Type | Implementation Logic Summary |
 
-        """
+        ---
+
+        **⚠️ Output Instructions – Must Follow Without Exception**:
+        - **Do not** omit or leave any section blank.
+        - For **every detail requested**, include a placeholder if the value is missing:
+            - `[N/A]` — Not applicable for this context.
+            - `[EMPTY]` — Expected but no value was found in the input.
+            - `[UNKNOWN]` — Could not be deduced or inferred confidently.
+        - **Never** leave any field or table cell empty.
+        - Avoid raw code unless absolutely necessary.
+        - Provide clear, concise, and technical descriptions suitable for SAP CAP developers.
+
+        The documentation must be copy-paste ready for Markdown viewers or Microsoft Word.
+    """
 
     user_prompt = f"""
                     Here are the CAP project files and their contents:

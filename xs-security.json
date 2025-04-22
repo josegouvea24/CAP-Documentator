@@ -1,0 +1,17 @@
+{
+    "xsappname": "cap-documentator-app",
+    "tenant-mode": "dedicated",
+    "scopes": [
+      {
+        "name": "$XSAPPNAME.Viewer",
+        "description": "Can view the app"
+      }
+    ],
+    "role-templates": [
+      {
+        "name": "Viewer",
+        "description": "Can view the app",
+        "scope-references": ["$XSAPPNAME.Viewer"]
+      }
+    ]
+  }  

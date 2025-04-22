@@ -5,21 +5,38 @@
   "repository": "<Add your repository here>",
   "license": "UNLICENSED",
   "private": true,
+  "engines": {
+    "node": "22.13.1"
+  },
   "dependencies": {
     "@sap/cds": "^8",
+    "@sap/xsenv": "^5.5.0",
+    "@sap/xssec": "^4.6.0",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
     "express": "^4"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.9.0",
-    "@cap-js/sqlite": "^1"
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8.9.2",
+    "rimraf": "^5.0.10"
   },
   "scripts": {
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
     "start": "cds-serve"
   },
   "cds": {
-    "requires": {},
+    "build": {
+      "target": "gen",
+      "tasks": [
+        {
+          "for": "mta",
+          "use": "@sap/cds"
+        }
+      ]
+    },
     "odata": {
       "version": "v4"
     }

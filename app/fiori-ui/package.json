@@ -7,6 +7,9 @@
     "openui5",
     "sapui5"
   ],
+  "engines": {
+    "node": "22.13.1"
+  },
   "main": "webapp/index.html",
   "devDependencies": {
     "@babel/eslint-parser": "7.14.7",

@@ -1,7 +1,5 @@
 applications:
-- name: cap-documentator-backend
-  memory: 512M
-  buildpacks:
-    - python_buildpack
-  command: python src/api/main.py
-  path: .
+  - name: cap-doc-flask-backend
+    memory: 512M 
+    buildpacks:
+      - https://github.com/cloudfoundry/python-buildpack.git#v1.8.27

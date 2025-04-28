@@ -5,7 +5,7 @@
     {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "cap-backend",
+      "destination": "cap-doc-cap-backend",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },

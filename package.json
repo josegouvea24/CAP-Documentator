@@ -40,5 +40,8 @@
     "odata": {
       "version": "v4"
     }
-  }
+  },
+  "sapux": [
+    "app/fiori-ui"
+  ]
 }

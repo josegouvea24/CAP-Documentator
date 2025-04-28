@@ -3,7 +3,7 @@ _ = load_dotenv(find_dotenv())
 
 from gen_ai_hub.proxy.native.openai import chat
 
-def generate_cds_documentation(relevant_file_content, llm_model = "gemini-1.5-pro", temperature = 0):
+def generate_cds_documentation(relevant_file_content, llm_model = "gpt-4o", temperature = 0):
     
     system_prompt = """
         You are a technical documentation assistant specialized in SAP CAP (Cloud Application Programming Model). 

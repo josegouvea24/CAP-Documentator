@@ -1,39 +1,40 @@
 import os
 import tempfile
-import git  # GitPython
+import git
+from pathlib import Path
+from collections import defaultdict
 
-IRRELEVANT_FILES = [
-    "/webapp",
-    "/app",
-    "/node_modules",
-    ".gitignore",
-    "package-lock.json",
-    "/i18n",
-    ".vscode",
-    ".env"
-]
+IGNORED_DIRS = {"node_modules", ".git", ".vscode", "i18n", "dist"}
+IGNORED_FILES = {".gitignore", "package-lock.json", ".env"}
 
-def clone_and_prepare(repo_url):
+def clone_repo(repo_url):
     temp_dir = tempfile.mkdtemp()
     git.Repo.clone_from(repo_url, temp_dir)
     return temp_dir
 
-def collect_all_files(project_path, irrelevant_files=IRRELEVANT_FILES):
-    relevant_files = []
-    
-    for root, dirs, files in os.walk(project_path):
+def section_files(repo_path):
+    repo_path = Path(repo_path)
+    files_by_section = defaultdict(lambda: defaultdict(list))
+    all_files = []
+
+    for root, dirs, files in os.walk(repo_path):
+        # Filter out ignored directories
+        dirs[:] = [d for d in dirs if d not in IGNORED_DIRS]
+        
         for file in files:
-                abs_path = os.path.join(root, file)
-                rel_path = os.path.relpath(abs_path, project_path)
+            # Filter out ignored files
+            if file in IGNORED_FILES:
+                continue
             
-                relevant_files.append({
-                    "name": file,
-                    "full_path": abs_path,
-                    "rel_path": rel_path,
-                    "format": file.split(".")[-1] if "." in file else None,
-                    "is_relevant": not any(exclude in rel_path for exclude in irrelevant_files),    
-                })
+            path = Path(root) / file
+            rel_path = path.relative_to(repo_path)
+            all_files.append(rel_path)
 
-                print(f"Collected file: {file} from {rel_path}")
+            # Group by top-level folder (CAP convention)
+            parts = rel_path.parts
+            section = parts[0] if len(parts) > 1 else "root"
+            type = path.suffix.lower()
+            type = type if type != "" else "other"
+            files_by_section[section][path.suffix.lower()].append(rel_path)
 
-    return relevant_files
+    return files_by_section

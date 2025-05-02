@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from ingestion.repo import clone_and_prepare, collect_all_files
-from processing.file_loader import load_file_content
-from generation.llm import generate_cds_documentation
+from ingestion.repo import clone_repo, section_files
 
 app = Flask(__name__)
 CORS(app)
@@ -21,13 +19,10 @@ def document():
         return jsonify({"error": "Missing 'url' in request body"}), 400
 
     try:
-        local_path = clone_and_prepare(repo_url)
-        files = collect_all_files(local_path)
-        file_content = load_file_content(files)
-        llm_response = generate_cds_documentation(file_content)
+        local_path = clone_repo(repo_url)
+        sectioned_files = section_files(local_path)
         
-        return jsonify({"readme": llm_response}), 200
-        
+                
     except Exception as e:
         print(f"❌ Error processing repo: {e}")
         return jsonify({"error": "Failed to fetch README."}), 500

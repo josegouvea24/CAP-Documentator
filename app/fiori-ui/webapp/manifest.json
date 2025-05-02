@@ -31,7 +31,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/DocumentationService/",
+        "uri": "odata/v4/DocumentationService/",
         "type": "OData",
         "settings": {
           "odataVersion": "4.0"

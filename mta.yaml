@@ -92,6 +92,7 @@ modules:
       no-source: true
 
 resources:
+  # XSUAA service instance
   - name: cap-doc-xsuaa
     type: org.cloudfoundry.managed-service
     parameters:
@@ -100,6 +101,7 @@ resources:
       path: xs-security.json
       service-name: cap-doc-xsuaa
 
+  # Destination service instance
   - name: cap-doc-destination
     type: org.cloudfoundry.managed-service
     parameters:
@@ -128,6 +130,7 @@ resources:
     requires:
       - name: srv-api
 
+  # HTML5 App Host service instance
   - name: cap-doc-html5-host
     type: org.cloudfoundry.managed-service
     parameters:
@@ -135,6 +138,7 @@ resources:
       service-plan: app-host
       service-name: cap-doc-html5-host
 
+  # HTML5 App Runtime service key
   - name: cap-doc-html5-runtime
     type: org.cloudfoundry.managed-service
     parameters:

@@ -10,12 +10,13 @@ modules:
   # CAP backend
   - name: cap-doc-cap-backend
     type: nodejs
-    path: .
+    path: gen/srv
     build-parameters:
-        builder: npm-ci
+      builder: npm-ci
     requires:
       - name: cap-doc-xsuaa
       - name: cap-doc-destination
+      - name: cap-doc-db
     provides:
       - name: srv-api
         properties:
@@ -40,7 +41,8 @@ modules:
         - npm install
         - npm run build:cf
       build-result: dist
-      supported-platforms: []
+      supported-platforms:
+        []
 
   # UI deployer: pushes UI5 app to HTML5 App Repo
   - name: cap-doc-fiori-ui-deployer
@@ -91,6 +93,14 @@ modules:
     build-parameters:
       no-source: true
 
+  - name: cap-doc-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: cap-doc-db
+    parameters:
+      buildpack: nodejs_buildpack
+
 resources:
   # XSUAA service instance
   - name: cap-doc-xsuaa
@@ -110,18 +120,18 @@ resources:
         init_data:
           instance:
             destinations:
-            - Authentication: NoAuthentication
-              Name: ui5
-              ProxyType: Internet
-              Type: HTTP
-              URL: https://ui5.sap.com
-            - Authentication: NoAuthentication
-              HTML5.DynamicDestination: true
-              HTML5.ForwardAuthToken: true
-              Name: cap-doc-cap-backend
-              ProxyType: Internet
-              Type: HTTP
-              URL: ~{srv-api/srv-url}
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: cap-doc-cap-backend
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
             existing_destinations_policy: update
       version: 1.0.0
       service: destination
@@ -144,3 +154,16 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
+  
+  # HANA HDI container
+  - name: cap-doc-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk@8.9.2 cds build --production

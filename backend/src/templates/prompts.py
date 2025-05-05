@@ -1,4 +1,4 @@
-def get_summary_prompt(chunk):
+def get_chunk_summary_prompt(chunk):
     name = chunk.name
     ext = chunk.type.lstrip(".")
     section = chunk.section

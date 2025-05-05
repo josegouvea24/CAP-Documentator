@@ -20,7 +20,7 @@ def call_llm(prompt: str, model: str = "gpt-4o", temperature: float = 0) -> str:
                         model=model,
                         temperature=temperature,
                         messages=[
-                            {"role": "system", "content": "You are a documentation assistant."},
+                            {"role": "system", "content": "You are a CAP documentation assistant."},
                             {"role": "user", "content": prompt}
                         ]
                     )

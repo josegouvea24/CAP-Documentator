@@ -14,7 +14,8 @@
     "@sap/xssec": "^4.6.0",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
-    "express": "^4"
+    "express": "^4",
+    "@cap-js/hana": "^1"
   },
   "devDependencies": {
     "@cap-js/cds-types": "^0.9.0",
@@ -25,17 +26,21 @@
   "scripts": {
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "hybrid": "cds watch --profile hybrid",
     "start": "cds-serve"
   },
   "cds": {
-    "build": {
-      "target": "gen",
-      "tasks": [
-        {
-          "for": "mta",
-          "use": "@sap/cds"
+    "requires": {
+      "db": {
+        "kind": "hana",
+        "vcap": {
+          "label": "hana",
+          "plan": "hdi-shared"
         }
-      ]
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
     },
     "odata": {
       "version": "v4"

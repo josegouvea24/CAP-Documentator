@@ -1,6 +1,4 @@
 from langgraph.graph import StateGraph
-from langgraph.prebuilt import ToolNode
-from typing import List
 
 from models.chunk import DocChunk
 from nodes.summarize_chunk_node import summarize_chunk_node

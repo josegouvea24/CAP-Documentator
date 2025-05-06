@@ -1,6 +1,5 @@
-import os
 from pathlib import Path
-from models.chunk import DocChunk
+from models.doc_chunk import DocChunk
 
 def chunk_files(repo_path: Path, files_by_section: dict) -> list[DocChunk]:
     """
@@ -29,7 +28,7 @@ def chunk_files(repo_path: Path, files_by_section: dict) -> list[DocChunk]:
                         section=section,
                         type=file_type,
                         content=content,
-                        metadata={}
+                        summary="",
                     )
                     chunks.append(chunk)
                 

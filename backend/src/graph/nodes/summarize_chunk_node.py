@@ -1,18 +1,16 @@
 import os
-from models.chunk import DocChunk
-from templates.prompts import get_chunk_summary_prompt
-from services.llm import call_llm
+from models.doc_chunk import DocChunk
+from llm.prompts import get_chunk_summary_prompt
+from llm.llm import call_llm
 
-def summarize_chunk_node(chunk: DocChunk) -> DocChunk:
-    """
-    LangGraph node: generates a structured LLM summary for a given DocChunk.
-    """
+def summarize_chunk_node(state: dict[str, DocChunk]) -> dict[str, DocChunk]:
     try:
+        chunk = state["chunk"]
         prompt = get_chunk_summary_prompt(chunk)
-        summary = call_llm(prompt, model= os.getenv("MODEL_CHUNK_SUMMARY"), temperature=0)
-        chunk.metadata["summary"] = summary.strip()
-        return chunk
-
+        summary = call_llm(prompt, model=os.getenv("MODEL_CHUNK_SUMMARY"), temperature=0)
+        chunk.summary = summary.strip()
+        return {"chunk": chunk}
+    
     except Exception as e:
-        chunk.metadata["summary_error"] = str(e)
-        return chunk
+        chunk.summary = f"[SUMMARY ERROR: {e}]"
+        return {"chunk": chunk}
